@@ -11,248 +11,829 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
 basePath: /v1
 paths:
-  /object/:
+  /account_deposit/:
     get:
       tags:
-      - object
-      description: get all objects
-      operationId: ObjectController.GetAll
+      - account_deposit
+      description: get AccountDeposit
+      operationId: AccountDepositController.Get All
+      parameters:
+      - in: query
+        name: query
+        description: Filter. e.g. col1:v1,col2:v2 ...
+        type: string
+      - in: query
+        name: fields
+        description: Fields returned. e.g. col1,col2 ...
+        type: string
+      - in: query
+        name: sortby
+        description: Sorted-by fields. e.g. col1,col2 ...
+        type: string
+      - in: query
+        name: order
+        description: Order corresponding to each sortby field, if single value, apply
+          to all sortby fields. e.g. desc,asc ...
+        type: string
+      - in: query
+        name: limit
+        description: Limit the size of result set. Must be an integer
+        type: string
+      - in: query
+        name: offset
+        description: Start position of result set. Must be an integer
+        type: string
       responses:
         "200":
           schema:
-            $ref: '#/definitions/models.Object'
-        "403":
-          description: :objectId is empty
+            $ref: '#/definitions/models.AccountDeposit'
+        "403": {}
     post:
       tags:
-      - object
-      description: create object
-      operationId: ObjectController.Create
+      - account_deposit
+      description: create AccountDeposit
+      operationId: AccountDepositController.Post
       parameters:
       - in: body
         name: body
-        description: The object content
+        description: body for AccountDeposit content
         required: true
         schema:
-          $ref: '#/definitions/models.Object'
+          $ref: '#/definitions/models.AccountDeposit'
       responses:
-        "200":
-          description: '{string} models.Object.Id'
+        "201":
+          description: '{int} models.AccountDeposit'
         "403":
           description: body is empty
-  /object/{objectId}:
+  /account_deposit/{id}:
     get:
       tags:
-      - object
-      description: find object by objectid
-      operationId: ObjectController.Get
+      - account_deposit
+      description: get AccountDeposit by id
+      operationId: AccountDepositController.Get One
       parameters:
       - in: path
-        name: objectId
-        description: the objectid you want to get
-        required: true
-        type: string
-      responses:
-        "200":
-          schema:
-            $ref: '#/definitions/models.Object'
-        "403":
-          description: :objectId is empty
-    put:
-      tags:
-      - object
-      description: update the object
-      operationId: ObjectController.Update
-      parameters:
-      - in: path
-        name: objectId
-        description: The objectid you want to update
-        required: true
-        type: string
-      - in: body
-        name: body
-        description: The body
-        required: true
-        schema:
-          $ref: '#/definitions/models.Object'
-      responses:
-        "200":
-          schema:
-            $ref: '#/definitions/models.Object'
-        "403":
-          description: :objectId is empty
-    delete:
-      tags:
-      - object
-      description: delete the object
-      operationId: ObjectController.Delete
-      parameters:
-      - in: path
-        name: objectId
-        description: The objectId you want to delete
-        required: true
-        type: string
-      responses:
-        "200":
-          description: '{string} delete success!'
-        "403":
-          description: objectId is empty
-  /user/:
-    get:
-      tags:
-      - user
-      description: get all Users
-      operationId: UserController.GetAll
-      responses:
-        "200":
-          schema:
-            $ref: '#/definitions/models.User'
-    post:
-      tags:
-      - user
-      description: create users
-      operationId: UserController.CreateUser
-      parameters:
-      - in: body
-        name: body
-        description: body for user content
-        required: true
-        schema:
-          $ref: '#/definitions/models.User'
-      responses:
-        "200":
-          description: '{int} models.User.Id'
-        "403":
-          description: body is empty
-  /user/{uid}:
-    get:
-      tags:
-      - user
-      description: get user by uid
-      operationId: UserController.Get
-      parameters:
-      - in: path
-        name: uid
+        name: id
         description: The key for staticblock
         required: true
         type: string
       responses:
         "200":
           schema:
-            $ref: '#/definitions/models.User'
+            $ref: '#/definitions/models.AccountDeposit'
         "403":
-          description: :uid is empty
+          description: :id is empty
     put:
       tags:
-      - user
-      description: update the user
-      operationId: UserController.Update
+      - account_deposit
+      description: update the AccountDeposit
+      operationId: AccountDepositController.Put
       parameters:
       - in: path
-        name: uid
-        description: The uid you want to update
+        name: id
+        description: The id you want to update
         required: true
         type: string
       - in: body
         name: body
-        description: body for user content
+        description: body for AccountDeposit content
         required: true
         schema:
-          $ref: '#/definitions/models.User'
+          $ref: '#/definitions/models.AccountDeposit'
       responses:
         "200":
           schema:
-            $ref: '#/definitions/models.User'
+            $ref: '#/definitions/models.AccountDeposit'
         "403":
-          description: :uid is not int
+          description: :id is not int
     delete:
       tags:
-      - user
-      description: delete the user
-      operationId: UserController.Delete
+      - account_deposit
+      description: delete the AccountDeposit
+      operationId: AccountDepositController.Delete
       parameters:
       - in: path
-        name: uid
-        description: The uid you want to delete
+        name: id
+        description: The id you want to delete
         required: true
         type: string
       responses:
         "200":
           description: '{string} delete success!'
         "403":
-          description: uid is empty
-  /user/login:
+          description: id is empty
+  /account_saving/:
     get:
       tags:
-      - user
-      description: Logs user into the system
-      operationId: UserController.Login
+      - account_saving
+      description: get AccountSaving
+      operationId: AccountSavingController.Get All
       parameters:
       - in: query
-        name: username
-        description: The username for login
-        required: true
+        name: query
+        description: Filter. e.g. col1:v1,col2:v2 ...
         type: string
       - in: query
-        name: password
-        description: The password for login
+        name: fields
+        description: Fields returned. e.g. col1,col2 ...
+        type: string
+      - in: query
+        name: sortby
+        description: Sorted-by fields. e.g. col1,col2 ...
+        type: string
+      - in: query
+        name: order
+        description: Order corresponding to each sortby field, if single value, apply
+          to all sortby fields. e.g. desc,asc ...
+        type: string
+      - in: query
+        name: limit
+        description: Limit the size of result set. Must be an integer
+        type: string
+      - in: query
+        name: offset
+        description: Start position of result set. Must be an integer
+        type: string
+      responses:
+        "200":
+          schema:
+            $ref: '#/definitions/models.AccountSaving'
+        "403": {}
+    post:
+      tags:
+      - account_saving
+      description: create AccountSaving
+      operationId: AccountSavingController.Post
+      parameters:
+      - in: body
+        name: body
+        description: body for AccountSaving content
+        required: true
+        schema:
+          $ref: '#/definitions/models.AccountSaving'
+      responses:
+        "201":
+          description: '{int} models.AccountSaving'
+        "403":
+          description: body is empty
+  /account_saving/{id}:
+    get:
+      tags:
+      - account_saving
+      description: get AccountSaving by id
+      operationId: AccountSavingController.Get One
+      parameters:
+      - in: path
+        name: id
+        description: The key for staticblock
         required: true
         type: string
       responses:
         "200":
-          description: '{string} login success'
+          schema:
+            $ref: '#/definitions/models.AccountSaving'
         "403":
-          description: user not exist
-  /user/logout:
-    get:
+          description: :id is empty
+    put:
       tags:
-      - user
-      description: Logs out current logged in user session
-      operationId: UserController.logout
+      - account_saving
+      description: update the AccountSaving
+      operationId: AccountSavingController.Put
+      parameters:
+      - in: path
+        name: id
+        description: The id you want to update
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: body for AccountSaving content
+        required: true
+        schema:
+          $ref: '#/definitions/models.AccountSaving'
       responses:
         "200":
-          description: '{string} logout success'
+          schema:
+            $ref: '#/definitions/models.AccountSaving'
+        "403":
+          description: :id is not int
+    delete:
+      tags:
+      - account_saving
+      description: delete the AccountSaving
+      operationId: AccountSavingController.Delete
+      parameters:
+      - in: path
+        name: id
+        description: The id you want to delete
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{string} delete success!'
+        "403":
+          description: id is empty
+  /account_saving_history/:
+    get:
+      tags:
+      - account_saving_history
+      description: get AccountSavingHistory
+      operationId: AccountSavingHistoryController.Get All
+      parameters:
+      - in: query
+        name: query
+        description: Filter. e.g. col1:v1,col2:v2 ...
+        type: string
+      - in: query
+        name: fields
+        description: Fields returned. e.g. col1,col2 ...
+        type: string
+      - in: query
+        name: sortby
+        description: Sorted-by fields. e.g. col1,col2 ...
+        type: string
+      - in: query
+        name: order
+        description: Order corresponding to each sortby field, if single value, apply
+          to all sortby fields. e.g. desc,asc ...
+        type: string
+      - in: query
+        name: limit
+        description: Limit the size of result set. Must be an integer
+        type: string
+      - in: query
+        name: offset
+        description: Start position of result set. Must be an integer
+        type: string
+      responses:
+        "200":
+          schema:
+            $ref: '#/definitions/models.AccountSavingHistory'
+        "403": {}
+    post:
+      tags:
+      - account_saving_history
+      description: create AccountSavingHistory
+      operationId: AccountSavingHistoryController.Post
+      parameters:
+      - in: body
+        name: body
+        description: body for AccountSavingHistory content
+        required: true
+        schema:
+          $ref: '#/definitions/models.AccountSavingHistory'
+      responses:
+        "201":
+          description: '{int} models.AccountSavingHistory'
+        "403":
+          description: body is empty
+  /account_saving_history/{id}:
+    get:
+      tags:
+      - account_saving_history
+      description: get AccountSavingHistory by id
+      operationId: AccountSavingHistoryController.Get One
+      parameters:
+      - in: path
+        name: id
+        description: The key for staticblock
+        required: true
+        type: string
+      responses:
+        "200":
+          schema:
+            $ref: '#/definitions/models.AccountSavingHistory'
+        "403":
+          description: :id is empty
+    put:
+      tags:
+      - account_saving_history
+      description: update the AccountSavingHistory
+      operationId: AccountSavingHistoryController.Put
+      parameters:
+      - in: path
+        name: id
+        description: The id you want to update
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: body for AccountSavingHistory content
+        required: true
+        schema:
+          $ref: '#/definitions/models.AccountSavingHistory'
+      responses:
+        "200":
+          schema:
+            $ref: '#/definitions/models.AccountSavingHistory'
+        "403":
+          description: :id is not int
+    delete:
+      tags:
+      - account_saving_history
+      description: delete the AccountSavingHistory
+      operationId: AccountSavingHistoryController.Delete
+      parameters:
+      - in: path
+        name: id
+        description: The id you want to delete
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{string} delete success!'
+        "403":
+          description: id is empty
+  /customer/:
+    get:
+      tags:
+      - customer
+      description: get Customer
+      operationId: CustomerController.Get All
+      parameters:
+      - in: query
+        name: query
+        description: Filter. e.g. col1:v1,col2:v2 ...
+        type: string
+      - in: query
+        name: fields
+        description: Fields returned. e.g. col1,col2 ...
+        type: string
+      - in: query
+        name: sortby
+        description: Sorted-by fields. e.g. col1,col2 ...
+        type: string
+      - in: query
+        name: order
+        description: Order corresponding to each sortby field, if single value, apply
+          to all sortby fields. e.g. desc,asc ...
+        type: string
+      - in: query
+        name: limit
+        description: Limit the size of result set. Must be an integer
+        type: string
+      - in: query
+        name: offset
+        description: Start position of result set. Must be an integer
+        type: string
+      responses:
+        "200":
+          schema:
+            $ref: '#/definitions/models.Customer'
+        "403": {}
+    post:
+      tags:
+      - customer
+      description: create Customer
+      operationId: CustomerController.Post
+      parameters:
+      - in: body
+        name: body
+        description: body for Customer content
+        required: true
+        schema:
+          $ref: '#/definitions/models.Customer'
+      responses:
+        "201":
+          description: '{int} models.Customer'
+        "403":
+          description: body is empty
+  /customer/{id}:
+    get:
+      tags:
+      - customer
+      description: get Customer by id
+      operationId: CustomerController.Get One
+      parameters:
+      - in: path
+        name: id
+        description: The key for staticblock
+        required: true
+        type: string
+      responses:
+        "200":
+          schema:
+            $ref: '#/definitions/models.Customer'
+        "403":
+          description: :id is empty
+    put:
+      tags:
+      - customer
+      description: update the Customer
+      operationId: CustomerController.Put
+      parameters:
+      - in: path
+        name: id
+        description: The id you want to update
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: body for Customer content
+        required: true
+        schema:
+          $ref: '#/definitions/models.Customer'
+      responses:
+        "200":
+          schema:
+            $ref: '#/definitions/models.Customer'
+        "403":
+          description: :id is not int
+    delete:
+      tags:
+      - customer
+      description: delete the Customer
+      operationId: CustomerController.Delete
+      parameters:
+      - in: path
+        name: id
+        description: The id you want to delete
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{string} delete success!'
+        "403":
+          description: id is empty
+  /customer_account/:
+    get:
+      tags:
+      - customer_account
+      description: get CustomerAccount
+      operationId: CustomerAccountController.Get All
+      parameters:
+      - in: query
+        name: query
+        description: Filter. e.g. col1:v1,col2:v2 ...
+        type: string
+      - in: query
+        name: fields
+        description: Fields returned. e.g. col1,col2 ...
+        type: string
+      - in: query
+        name: sortby
+        description: Sorted-by fields. e.g. col1,col2 ...
+        type: string
+      - in: query
+        name: order
+        description: Order corresponding to each sortby field, if single value, apply
+          to all sortby fields. e.g. desc,asc ...
+        type: string
+      - in: query
+        name: limit
+        description: Limit the size of result set. Must be an integer
+        type: string
+      - in: query
+        name: offset
+        description: Start position of result set. Must be an integer
+        type: string
+      responses:
+        "200":
+          schema:
+            $ref: '#/definitions/models.CustomerAccount'
+        "403": {}
+    post:
+      tags:
+      - customer_account
+      description: create CustomerAccount
+      operationId: CustomerAccountController.Post
+      parameters:
+      - in: body
+        name: body
+        description: body for CustomerAccount content
+        required: true
+        schema:
+          $ref: '#/definitions/models.CustomerAccount'
+      responses:
+        "201":
+          description: '{int} models.CustomerAccount'
+        "403":
+          description: body is empty
+  /customer_account/{id}:
+    get:
+      tags:
+      - customer_account
+      description: get CustomerAccount by id
+      operationId: CustomerAccountController.Get One
+      parameters:
+      - in: path
+        name: id
+        description: The key for staticblock
+        required: true
+        type: string
+      responses:
+        "200":
+          schema:
+            $ref: '#/definitions/models.CustomerAccount'
+        "403":
+          description: :id is empty
+    put:
+      tags:
+      - customer_account
+      description: update the CustomerAccount
+      operationId: CustomerAccountController.Put
+      parameters:
+      - in: path
+        name: id
+        description: The id you want to update
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: body for CustomerAccount content
+        required: true
+        schema:
+          $ref: '#/definitions/models.CustomerAccount'
+      responses:
+        "200":
+          schema:
+            $ref: '#/definitions/models.CustomerAccount'
+        "403":
+          description: :id is not int
+    delete:
+      tags:
+      - customer_account
+      description: delete the CustomerAccount
+      operationId: CustomerAccountController.Delete
+      parameters:
+      - in: path
+        name: id
+        description: The id you want to delete
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{string} delete success!'
+        "403":
+          description: id is empty
+  /users/:
+    get:
+      tags:
+      - users
+      description: get Users
+      operationId: UsersController.Get All
+      parameters:
+      - in: query
+        name: query
+        description: Filter. e.g. col1:v1,col2:v2 ...
+        type: string
+      - in: query
+        name: fields
+        description: Fields returned. e.g. col1,col2 ...
+        type: string
+      - in: query
+        name: sortby
+        description: Sorted-by fields. e.g. col1,col2 ...
+        type: string
+      - in: query
+        name: order
+        description: Order corresponding to each sortby field, if single value, apply
+          to all sortby fields. e.g. desc,asc ...
+        type: string
+      - in: query
+        name: limit
+        description: Limit the size of result set. Must be an integer
+        type: string
+      - in: query
+        name: offset
+        description: Start position of result set. Must be an integer
+        type: string
+      responses:
+        "200":
+          schema:
+            $ref: '#/definitions/models.Users'
+        "403": {}
+    post:
+      tags:
+      - users
+      description: create Users
+      operationId: UsersController.Post
+      parameters:
+      - in: body
+        name: body
+        description: body for Users content
+        required: true
+        schema:
+          $ref: '#/definitions/models.Users'
+      responses:
+        "201":
+          description: '{int} models.Users'
+        "403":
+          description: body is empty
+  /users/{id}:
+    get:
+      tags:
+      - users
+      description: get Users by id
+      operationId: UsersController.Get One
+      parameters:
+      - in: path
+        name: id
+        description: The key for staticblock
+        required: true
+        type: string
+      responses:
+        "200":
+          schema:
+            $ref: '#/definitions/models.Users'
+        "403":
+          description: :id is empty
+    put:
+      tags:
+      - users
+      description: update the Users
+      operationId: UsersController.Put
+      parameters:
+      - in: path
+        name: id
+        description: The id you want to update
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: body for Users content
+        required: true
+        schema:
+          $ref: '#/definitions/models.Users'
+      responses:
+        "200":
+          schema:
+            $ref: '#/definitions/models.Users'
+        "403":
+          description: :id is not int
+    delete:
+      tags:
+      - users
+      description: delete the Users
+      operationId: UsersController.Delete
+      parameters:
+      - in: path
+        name: id
+        description: The id you want to delete
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{string} delete success!'
+        "403":
+          description: id is empty
 definitions:
-  models.Object:
-    title: Object
+  models.AccountDeposit:
+    title: AccountDeposit
     type: object
     properties:
-      ObjectId:
+      AccountSavingId:
+        $ref: '#/definitions/models.AccountSaving'
+      CreatedAt:
         type: string
-      PlayerName:
+        format: string
+      DeletedAt:
         type: string
-      Score:
+        format: string
+      Id:
         type: integer
         format: int64
-  models.Profile:
-    title: Profile
+      Money:
+        type: integer
+        format: int64
+      UpdatedAt:
+        type: string
+        format: string
+  models.AccountSaving:
+    title: AccountSaving
+    type: object
+    properties:
+      CreatedAt:
+        type: string
+        format: string
+      DeletedAt:
+        type: string
+        format: string
+      Descriptions:
+        type: string
+      Id:
+        type: integer
+        format: int64
+      Name:
+        type: string
+      Type:
+        type: string
+      UpdatedAt:
+        type: string
+        format: string
+  models.AccountSavingHistory:
+    title: AccountSavingHistory
+    type: object
+    properties:
+      AccountDepositId:
+        $ref: '#/definitions/models.AccountDeposit'
+      BankOfficerId:
+        $ref: '#/definitions/models.Users'
+      CreatedAt:
+        type: string
+        format: string
+      Id:
+        type: integer
+        format: int64
+      Money:
+        type: integer
+        format: int64
+      Type:
+        type: string
+  models.Customer:
+    title: Customer
     type: object
     properties:
       Address:
         type: string
-      Age:
-        type: integer
-        format: int64
+      CreatedAt:
+        type: string
+        format: string
+      DeletedAt:
+        type: string
+        format: string
       Email:
         type: string
-      Gender:
+      Id:
+        type: integer
+        format: int64
+      Name:
         type: string
-  models.User:
-    title: User
+      Nik:
+        type: string
+      Phone:
+        type: string
+      UpdatedAt:
+        type: string
+        format: string
+  models.CustomerAccount:
+    title: CustomerAccount
     type: object
     properties:
+      AccountSavingId:
+        $ref: '#/definitions/models.AccountSaving'
+      Active:
+        type: integer
+        format: int32
+      CreatedAt:
+        type: string
+        format: string
+      CustomerId:
+        $ref: '#/definitions/models.Customer'
+      DeletedAt:
+        type: string
+        format: string
       Id:
+        type: integer
+        format: int64
+      UpdatedAt:
         type: string
-      Password:
+        format: string
+  models.Users:
+    title: Users
+    type: object
+    properties:
+      Active:
+        type: integer
+        format: int32
+      Address:
         type: string
-      Profile:
-        $ref: '#/definitions/models.Profile'
-      Username:
+      CreatedAt:
         type: string
+        format: string
+      DeletedAt:
+        type: string
+        format: string
+      Email:
+        type: string
+      Id:
+        type: integer
+        format: int64
+      Name:
+        type: string
+      Nik:
+        type: string
+      Phone:
+        type: string
+      UpdatedAt:
+        type: string
+        format: string
 tags:
-- name: object
+- name: account_deposit
   description: |
-    Operations about object
-- name: user
+    AccountDepositController operations for AccountDeposit
+- name: account_saving
   description: |
-    Operations about Users
+    AccountSavingController operations for AccountSaving
+- name: account_saving_history
+  description: |
+    AccountSavingHistoryController operations for AccountSavingHistory
+- name: customer
+  description: |
+    CustomerController operations for Customer
+- name: customer_account
+  description: |
+    CustomerAccountController operations for CustomerAccount
+- name: users
+  description: |
+    UsersController operations for Users
