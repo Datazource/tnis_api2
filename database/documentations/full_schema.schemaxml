@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemadesigner version="6.5">
+<source>
+<database charset="latin1" collation="latin1_swedish_ci">tnis</database>
+</source>
+<canvas zoom="100">
+<tables>
+<table name="account_deposit" view="colnames">
+<left>368</left>
+<top>321</top>
+<width>149</width>
+<height>158</height>
+<sql_create_table>CREATE TABLE `account_deposit` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `account_saving_id` bigint(20) unsigned NOT NULL,
+  `money` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `account_saving_id` (`account_saving_id`),
+  CONSTRAINT `account_deposit_ibfk_1` FOREIGN KEY (`account_saving_id`) REFERENCES `account_saving` (`account_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="account_saving" view="colnames">
+<left>549</left>
+<top>243</top>
+<width>112</width>
+<height>174</height>
+<sql_create_table>CREATE TABLE `account_saving` (
+  `account_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  `type` enum('GOLD','PLATINUM') NOT NULL DEFAULT 'GOLD',
+  `descriptions` text,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`account_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="account_saving_history" view="colnames">
+<left>209</left>
+<top>139</top>
+<width>128</width>
+<height>158</height>
+<sql_create_table>CREATE TABLE `account_saving_history` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `account_deposit_id` int(11) unsigned NOT NULL,
+  `bank_officer_id` int(10) unsigned NOT NULL,
+  `money` int(11) NOT NULL,
+  `type` enum('deposit','withdraw') DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `account_deposit_id` (`account_deposit_id`),
+  KEY `bank_officer_id` (`bank_officer_id`),
+  CONSTRAINT `account_saving_history_ibfk_1` FOREIGN KEY (`account_deposit_id`) REFERENCES `account_deposit` (`id`),
+  CONSTRAINT `account_saving_history_ibfk_2` FOREIGN KEY (`bank_officer_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="customer" view="colnames">
+<left>720</left>
+<top>78</top>
+<width>112</width>
+<height>206</height>
+<sql_create_table>CREATE TABLE `customer` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `email` varchar(20) NOT NULL,
+  `nik` varchar(40) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `address` text,
+  `phone` varchar(20) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="customer_account" view="colnames">
+<left>380</left>
+<top>62</top>
+<width>137</width>
+<height>174</height>
+<sql_create_table>CREATE TABLE `customer_account` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `customer_id` int(10) unsigned NOT NULL,
+  `account_saving_id` bigint(20) unsigned NOT NULL,
+  `active` tinyint(4) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `customer_id` (`customer_id`),
+  KEY `account_saving_id` (`account_saving_id`),
+  CONSTRAINT `customer_account_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`),
+  CONSTRAINT `customer_account_ibfk_2` FOREIGN KEY (`account_saving_id`) REFERENCES `account_saving` (`account_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="users" view="colnames">
+<left>65</left>
+<top>254</top>
+<width>112</width>
+<height>238</height>
+<sql_create_table>CREATE TABLE `users` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `nik` varchar(50) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `password` varchar(50) NOT NULL,
+  `name` varchar(200) NOT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `address` text,
+  `active` tinyint(4) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+</tables>
+</canvas>
+</schemadesigner>
