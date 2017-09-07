@@ -1,14 +1,62 @@
 package controllers
 
 import (
-	"tnis_api2/models"
+	"crypto/rsa"
 	"encoding/json"
 	"errors"
+	"fmt"
+	"io/ioutil"
+	"log"
+	"net/http"
 	"strconv"
 	"strings"
+	"time"
+	"tnis_api2/models"
 
 	"github.com/astaxie/beego"
+	jwt "github.com/dgrijalva/jwt-go"
 )
+
+const (
+	privKeyPath = "app.rsa"
+	pubKeyPath  = "app.rsa.pub"
+)
+
+var (
+	verifyKey *rsa.PublicKey
+	signKey   *rsa.PrivateKey
+)
+
+func fatal(err error) {
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func initKeys() {
+	signBytes, err := ioutil.ReadFile(privKeyPath)
+	fatal(err)
+
+	signKey, err = jwt.ParseRSAPrivateKeyFromPEM(signBytes)
+	fatal(err)
+
+	verifyBytes, err := ioutil.ReadFile(pubKeyPath)
+	fatal(err)
+
+	verifyKey, err = jwt.ParseRSAPublicKeyFromPEM(verifyBytes)
+	fatal(err)
+}
+
+// Token ...
+type Token struct {
+	Token string `json:"token"`
+}
+
+// UserCredentials ...
+type UserCredentials struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
 
 // UsersController operations for Users
 type UsersController struct {
@@ -168,4 +216,62 @@ func (c *UsersController) Delete() {
 		c.Data["json"] = err.Error()
 	}
 	c.ServeJSON()
+}
+
+// @Title Login
+// @Description Logs user into the system
+// @Param	email		query 	string	true			"The email for login"
+// @Param	password		query 	string	true		"The password for login"
+// @Success 200 {string} login success
+// @Failure 403 user not exist
+// @router /login [post]
+func (c *UsersController) Login() {
+
+	initKeys()
+	var user UserCredentials
+
+	
+
+	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &user); err == nil {
+
+		if errs := models.Login(user.Email, user.Password); errs == nil {
+
+			token := jwt.New(jwt.SigningMethodRS256)
+			claims := make(jwt.MapClaims)
+			claims["exp"] = time.Now().Add(time.Hour * time.Duration(1)).Unix()
+			claims["iat"] = time.Now().Unix()
+			token.Claims = claims
+			w := c.Ctx.ResponseWriter
+			if err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				fmt.Fprintln(w, "Error extracting the key")
+				fatal(err)
+			}
+
+			tokenString, err := token.SignedString(signKey)
+			if err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				fmt.Fprintln(w, "Error while signing the token")
+				fatal(err)
+			}
+
+			response := Token{tokenString}
+			c.Data["json"] = response
+		} else {
+			c.Data["json"] = "user not exist"
+		}
+	} else {
+		c.Data["json"] = err.Error()
+	}
+
+	c.ServeJSON()
+}
+
+// @Title logout
+// @Description Logs out current logged in user session
+// @Success 200 {string} logout success
+// @router /logout [get]
+func (u *UsersController) Logout() {
+	u.Data["json"] = "logout success"
+	u.ServeJSON()
 }

@@ -247,4 +247,20 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
+	beego.GlobalControllerRouter["tnis_api2/controllers:UsersController"] = append(beego.GlobalControllerRouter["tnis_api2/controllers:UsersController"],
+		beego.ControllerComments{
+			Method: "Login",
+			Router: `/login`,
+			AllowHTTPMethods: []string{"post"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["tnis_api2/controllers:UsersController"] = append(beego.GlobalControllerRouter["tnis_api2/controllers:UsersController"],
+		beego.ControllerComments{
+			Method: "Logout",
+			Router: `/logout`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams: param.Make(),
+			Params: nil})
+
 }

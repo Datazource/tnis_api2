@@ -11,17 +11,16 @@ import (
 )
 
 type Customer struct {
-Id int `orm:"column(id);auto"`
-Email string `orm:"column(email);size(20)"`
-Nik string `orm:"column(nik);size(40)"`
-Name string `orm:"column(name);size(50)"`
-Address string `orm:"column(address);null"`
-Phone string `orm:"column(phone);size(20);null"`
-CreatedAt time.Time `orm:"column(created_at);type(timestamp);auto_now_add"`
-UpdatedAt time.Time `orm:"column(updated_at);type(timestamp);auto_now_add"`
-DeletedAt time.Time `orm:"column(deleted_at);type(timestamp);auto_now_add"`
+	Id        int       `orm:"column(id);auto"`
+	Email     string    `orm:"column(email);size(20)"`
+	Nik       string    `orm:"column(nik);size(40)"`
+	Name      string    `orm:"column(name);size(50)"`
+	Address   string    `orm:"column(address);null"`
+	Phone     string    `orm:"column(phone);size(20);null"`
+	CreatedAt time.Time `orm:"column(created_at);type(timestamp);auto_now_add"`
+	UpdatedAt time.Time `orm:"column(updated_at);type(timestamp);auto_now_add"`
+	DeletedAt time.Time `orm:"column(deleted_at);type(timestamp);auto_now_add"`
 }
-
 
 func (t *Customer) TableName() string {
 	return "customer"

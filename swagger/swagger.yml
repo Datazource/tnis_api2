@@ -677,6 +677,37 @@ paths:
           description: '{string} delete success!'
         "403":
           description: id is empty
+  /users/login:
+    post:
+      tags:
+      - users
+      description: Logs user into the system
+      operationId: UsersController.Login
+      parameters:
+      - in: query
+        name: email
+        description: The email for login
+        required: true
+        type: string
+      - in: query
+        name: password
+        description: The password for login
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{string} login success'
+        "403":
+          description: user not exist
+  /users/logout:
+    get:
+      tags:
+      - users
+      description: Logs out current logged in user session
+      operationId: UsersController.logout
+      responses:
+        "200":
+          description: '{string} logout success'
 definitions:
   models.AccountDeposit:
     title: AccountDeposit
@@ -812,6 +843,8 @@ definitions:
       Name:
         type: string
       Nik:
+        type: string
+      Password:
         type: string
       Phone:
         type: string

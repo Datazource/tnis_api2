@@ -11,18 +11,18 @@ import (
 )
 
 type Users struct {
-Id int `orm:"column(id);auto"`
-Nik string `orm:"column(nik);size(50)"`
-Email string `orm:"column(email);size(50)"`
-Name string `orm:"column(name);size(200)"`
-Phone string `orm:"column(phone);size(20);null"`
-Address string `orm:"column(address);null"`
-Active int8 `orm:"column(active)"`
-CreatedAt time.Time `orm:"column(created_at);type(timestamp);null"`
-UpdatedAt time.Time `orm:"column(updated_at);type(timestamp);null"`
-DeletedAt time.Time `orm:"column(deleted_at);type(timestamp);null"`
+	Id        int       `orm:"column(id);auto"`
+	Nik       string    `orm:"column(nik);size(50)"`
+	Email     string    `orm:"column(email);size(50)"`
+	Password  string    `orm:"column(password);size(50)"`
+	Name      string    `orm:"column(name);size(200)"`
+	Phone     string    `orm:"column(phone);size(20);null"`
+	Address   string    `orm:"column(address);null"`
+	Active    int8      `orm:"column(active)"`
+	CreatedAt time.Time `orm:"column(created_at);type(timestamp);null"`
+	UpdatedAt time.Time `orm:"column(updated_at);type(timestamp);null"`
+	DeletedAt time.Time `orm:"column(deleted_at);type(timestamp);null"`
 }
-
 
 func (t *Users) TableName() string {
 	return "users"
@@ -155,6 +155,23 @@ func DeleteUsers(id int) (err error) {
 		if num, err = o.Delete(&Users{Id: id}); err == nil {
 			fmt.Println("Number of records deleted in database:", num)
 		}
+	}
+	return
+}
+
+// Login ...
+func Login(email, password string) (err error) {
+	o := orm.NewOrm()
+	user := Users{Email: email, Password: password}
+
+	err = o.Read(&user, "Email", "Password")
+
+	if err == orm.ErrNoRows {
+		fmt.Println("No result found.")
+	} else if err == orm.ErrMissPK {
+		fmt.Println("No primary key found.")
+	} else {
+		fmt.Println(user.Id)
 	}
 	return
 }
